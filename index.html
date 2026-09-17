@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        /* Minimalist and aesthetic styling */
+        body {
+            background-color: #f7f7f7; /* Very soft, aesthetic off-white */
+            color: #222222; /* Soft black for less eye strain */
+            font-family: 'Courier New', Courier, monospace; /* Monospace keeps the cake aligned */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #terminal {
+            white-space: pre-wrap; /* Preserves spaces for the ASCII cake */
+            font-size: 14px;
+            line-height: 1.6;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        /* Blinking cursor effect */
+        .cursor::after {
+            content: "█";
+            animation: blink 1s step-start infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="terminal" class="cursor"></div>
+
+    <script>
+        // The script data with timings and formatting
+        const lines = [
+            { text: "\n\n\n", speed: 0, delay: 500 },
+            { text: "    ❀    ʚϊɞ    ❁    ✿    ʚϊɞ    𖧷    ", speed: 20, delay: 500 },
+            { text: "\n", speed: 0, delay: 0 },
+            { text: "             .   .   .", speed: 10, delay: 0 },
+            { text: "             |   |   |", speed: 10, delay: 0 },
+            { text: "           -------------", speed: 10, delay: 0 },
+            { text: "           |           |", speed: 10, delay: 0 },
+            { text: "           -------------", speed: 10, delay: 800 },
+            { text: "\n", speed: 0, delay: 0 },
+            { text: " HAPPY BIRTHDAY, NIHARIKA.", speed: 80, delay: 600, bold: true },
+            { text: "\n\n", speed: 0, delay: 0 },
+            { text: "    ✾    ʚϊɞ    ❁    𖧷    ʚϊɞ    ❀    ", speed: 20, delay: 500 },
+            { text: "\n\n", speed: 0, delay: 0 },
+            { text: " I KNOW IT'S BEEN A LONG TIME SINCE WE CAUGHT UP,", speed: 50, delay: 0 },
+            { text: " BUT THE BEST FRIENDSHIPS JUST PICK UP RIGHT WHERE THEY LEFT OFF.", speed: 50, delay: 0 },
+            { text: " I KNOW WE RARELY SPEAK, AND MOSTLY JUST SHARE QUIET NODS OR PASSING GLANCES AROUND CAMPUS,", speed: 50, delay: 0 },
+            { text: " BUT IT DOESN'T MATTER, RIGHT? ANYWAY, IT'S YOUR BIRTHDAY AND ONCE AGAIN...", speed: 50, delay: 500 },
+            { text: "\n", speed: 0, delay: 0 },
+            { text: " WISHING YOU THE ABSOLUTE BEST DAY TODAY.", speed: 50, delay: 0 },
+            { text: " LET'S RECONNECT PROPERLY SOON.", speed: 50, delay: 600 },
+            { text: "\n\n", speed: 0, delay: 0 },
+            { text: "    𖧷    ʚϊɞ    ❀    ✿    ʚϊɞ    ❁    ", speed: 20, delay: 0 },
+            { text: "\n\n", speed: 0, delay: 0 },
+            { text: " — BHAVESH", speed: 60, delay: 0, bold: true }
+        ];
+
+        const terminal = document.getElementById('terminal');
+
+        // Function to type out characters one by one
+        async function typeLine(line) {
+            return new Promise(resolve => {
+                let span = document.createElement('span');
+                if (line.bold) span.className = 'bold';
+                
+                // Add the span to the terminal before the cursor
+                terminal.appendChild(span);
+
+                let i = 0;
+                function typeChar() {
+                    if (i < line.text.length) {
+                        span.textContent += line.text.charAt(i);
+                        i++;
+                        setTimeout(typeChar, line.speed);
+                    } else {
+                        // After typing the line, wait for the specified delay
+                        setTimeout(() => {
+                            if (line.text !== "\n" && line.text !== "\n\n" && line.text !== "\n\n\n") {
+                                // Add a line break after text lines
+                                terminal.appendChild(document.createTextNode("\n"));
+                            }
+                            resolve();
+                        }, line.delay || 0);
+                    }
+                }
+                typeChar();
+            });
+        }
+
+        // Main function to run the animation sequence
+        async function runSequence() {
+            for (let i = 0; i < lines.length; i++) {
+                await typeLine(lines[i]);
+            }
+            // Optional: Remove the blinking cursor after it finishes typing
+            // terminal.classList.remove('cursor'); 
+        }
+
+        // Start the typing effect
+        runSequence();
+    </script>
+</body>
+</html>
